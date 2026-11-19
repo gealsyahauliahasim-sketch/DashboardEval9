@@ -10,12 +10,11 @@ import streamlit as st
 # ==========================================
 st.set_page_config(
     page_title="Dashboard Analisis Diamonds",
-    page_icon="💎",
     layout="wide"
 )
 
 # ==========================================
-# STYLE DAN BACKGROUND GRADASI
+# STYLE, GRADASI, DAN ANIMASI
 # ==========================================
 st.markdown("""
 <style>
@@ -26,37 +25,72 @@ html, body, [class*="css"] {
     font-family: 'Poppins', sans-serif;
 }
 
-/* BACKGROUND UTAMA */
+/* BACKGROUND GRADASI BERGERAK */
 [data-testid="stAppViewContainer"] {
     background:
-        radial-gradient(ellipse at 8% 12%,
-            rgba(233, 79, 145, 0.48) 0%,
-            transparent 38%),
-
-        radial-gradient(ellipse at 90% 8%,
-            rgba(135, 58, 145, 0.42) 0%,
+        radial-gradient(ellipse at 15% 20%,
+            rgba(233, 79, 145, 0.50),
             transparent 40%),
-
-        radial-gradient(ellipse at 75% 85%,
-            rgba(182, 108, 214, 0.40) 0%,
+        radial-gradient(ellipse at 85% 15%,
+            rgba(135, 58, 145, 0.45),
             transparent 42%),
-
-        radial-gradient(ellipse at 15% 90%,
-            rgba(246, 161, 203, 0.40) 0%,
+        radial-gradient(ellipse at 80% 85%,
+            rgba(182, 108, 214, 0.42),
             transparent 40%),
-
+        radial-gradient(ellipse at 15% 85%,
+            rgba(246, 161, 203, 0.45),
+            transparent 42%),
         linear-gradient(
             135deg,
-            #FCE5F3 0%,
-            #F5D3E9 30%,
-            #E8C7F0 60%,
-            #DCC8F5 100%
+            #FCE5F3,
+            #F5D3E9,
+            #E8C7F0,
+            #DCC8F5,
+            #F8D9EC
         );
 
+    background-size:
+        200% 200%,
+        200% 200%,
+        200% 200%,
+        200% 200%,
+        300% 300%;
+
+    animation: gradientMove 18s ease infinite;
     background-attachment: fixed;
 }
 
-/* AREA KONTEN */
+/* GERAKAN GRADASI */
+@keyframes gradientMove {
+    0% {
+        background-position:
+            0% 50%,
+            100% 0%,
+            100% 100%,
+            0% 100%,
+            0% 50%;
+    }
+
+    50% {
+        background-position:
+            100% 50%,
+            0% 100%,
+            0% 0%,
+            100% 0%,
+            100% 50%;
+    }
+
+    100% {
+        background-position:
+            0% 50%,
+            100% 0%,
+            100% 100%,
+            0% 100%,
+            0% 50%;
+    }
+}
+
+/* AREA UTAMA */
 [data-testid="stMain"] {
     background: transparent;
 }
@@ -66,14 +100,31 @@ html, body, [class*="css"] {
     background:
         linear-gradient(
             160deg,
-            rgba(233, 79, 145, 0.28),
-            rgba(135, 58, 145, 0.22),
-            rgba(182, 108, 214, 0.28)
+            rgba(233, 79, 145, 0.30),
+            rgba(135, 58, 145, 0.28),
+            rgba(182, 108, 214, 0.32)
         );
-    border-right: 1px solid rgba(255,255,255,0.4);
+
+    background-size: 300% 300%;
+    animation: sidebarGlow 15s ease infinite;
+
+    border-right: 1px solid rgba(255,255,255,0.45);
 }
 
-/* SIDEBAR TEXT */
+@keyframes sidebarGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 [data-testid="stSidebar"] * {
     color: #54264F;
 }
@@ -89,36 +140,58 @@ h2, h3 {
     font-weight: 600 !important;
 }
 
-/* PARAGRAF */
-p, label, span {
-    color: #593B59;
-}
-
-/* KPI CARDS */
+/* KPI CARD */
 [data-testid="stMetric"] {
-    background: rgba(255,255,255,0.70);
-    border: 1px solid rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.72);
+    border: 1px solid rgba(255,255,255,0.85);
     padding: 18px 20px;
     border-radius: 18px;
-    box-shadow: 0 6px 22px rgba(126, 55, 113, 0.10);
+
+    box-shadow:
+        0 6px 22px rgba(126, 55, 113, 0.12);
+
     backdrop-filter: blur(12px);
+
+    transition: all 0.35s ease;
+
+    animation: softGlow 4s ease-in-out infinite alternate;
 }
 
-/* KPI LABEL */
+[data-testid="stMetric"]:hover {
+    transform: translateY(-6px) scale(1.02);
+
+    box-shadow:
+        0 12px 28px rgba(126, 55, 113, 0.22);
+
+    background: rgba(255,255,255,0.90);
+}
+
 [data-testid="stMetricLabel"] {
     color: #793E75 !important;
     font-weight: 500;
 }
 
-/* KPI VALUE */
 [data-testid="stMetricValue"] {
     color: #782D6D !important;
     font-weight: 700;
 }
 
+/* ANIMASI GLOW KPI */
+@keyframes softGlow {
+    from {
+        box-shadow:
+            0 5px 18px rgba(135, 58, 145, 0.10);
+    }
+
+    to {
+        box-shadow:
+            0 8px 24px rgba(233, 79, 145, 0.17);
+    }
+}
+
 /* SELECTBOX */
 [data-testid="stSelectbox"] > div > div {
-    background-color: rgba(255,255,255,0.78);
+    background-color: rgba(255,255,255,0.80);
     border-radius: 12px;
 }
 
@@ -127,10 +200,77 @@ p, label, span {
     padding-top: 5px;
 }
 
+/* KOTAK GRAFIK */
+div[data-testid="stElementContainer"]:has(img) {
+    border-radius: 20px;
+    padding: 8px;
+
+    background: rgba(255,255,255,0.35);
+
+    border: 1px solid rgba(255,255,255,0.65);
+
+    box-shadow:
+        0 5px 20px rgba(135, 58, 145, 0.08);
+
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease,
+        background 0.4s ease;
+
+    animation: boxAppear 0.8s ease both;
+}
+
+/* HOVER KOTAK GRAFIK */
+div[data-testid="stElementContainer"]:has(img):hover {
+    transform: translateY(-5px);
+
+    background: rgba(255,255,255,0.60);
+
+    box-shadow:
+        0 12px 30px rgba(135, 58, 145, 0.18),
+        0 0 15px rgba(233, 79, 145, 0.10);
+
+    border: 1px solid rgba(255,255,255,0.95);
+}
+
+/* ANIMASI KOTAK MUNCUL */
+@keyframes boxAppear {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 /* DATAFRAME */
 [data-testid="stDataFrame"] {
     border-radius: 14px;
     overflow: hidden;
+    transition: all 0.35s ease;
+}
+
+[data-testid="stDataFrame"]:hover {
+    box-shadow:
+        0 10px 25px rgba(135, 58, 145, 0.16);
+}
+
+/* EXPANDER */
+[data-testid="stExpander"] {
+    background: rgba(255,255,255,0.58);
+    border: 1px solid rgba(255,255,255,0.70);
+    border-radius: 15px;
+    transition: all 0.35s ease;
+}
+
+[data-testid="stExpander"]:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(135, 58, 145, 0.15);
 }
 
 /* TAB */
@@ -138,21 +278,24 @@ button[data-baseweb="tab"] {
     color: #783B77 !important;
 }
 
-/* EXPANDER */
-[data-testid="stExpander"] {
-    background: rgba(255,255,255,0.55);
-    border: 1px solid rgba(255,255,255,0.65);
-    border-radius: 15px;
+/* ANIMASI KONTEN */
+.block-container {
+    animation: fadeIn 1.2s ease;
 }
 
-/* CHART CONTAINER */
-[data-testid="stPlotlyChart"],
-[data-testid="stImage"] {
-    background: rgba(255,255,255,0.30);
-    border-radius: 15px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* DIVIDER */
+/* GARIS PEMBATAS */
 hr {
     border-color: rgba(135, 58, 145, 0.20);
 }
@@ -160,6 +303,11 @@ hr {
 /* FOOTER */
 footer {
     visibility: hidden;
+}
+
+/* SCROLL SMOOTH */
+* {
+    scroll-behavior: smooth;
 }
 
 </style>
@@ -181,8 +329,11 @@ data = load_data()
 # ==========================================
 # SIDEBAR - FILTER DATA
 # ==========================================
-st.sidebar.title("💎 Filter Dashboard")
-st.sidebar.markdown("Atur pilihan data sesuai kebutuhan analisis.")
+st.sidebar.title("Filter Dashboard")
+
+st.sidebar.markdown(
+    "Atur pilihan data sesuai kebutuhan analisis."
+)
 
 cut_options = ["All"] + sorted(data["cut"].unique().tolist())
 color_options = ["All"] + sorted(data["color"].unique().tolist())
@@ -230,13 +381,19 @@ selected_price = st.sidebar.slider(
 data_filter = data.copy()
 
 if selected_cut != "All":
-    data_filter = data_filter[data_filter["cut"] == selected_cut]
+    data_filter = data_filter[
+        data_filter["cut"] == selected_cut
+    ]
 
 if selected_color != "All":
-    data_filter = data_filter[data_filter["color"] == selected_color]
+    data_filter = data_filter[
+        data_filter["color"] == selected_color
+    ]
 
 if selected_clarity != "All":
-    data_filter = data_filter[data_filter["clarity"] == selected_clarity]
+    data_filter = data_filter[
+        data_filter["clarity"] == selected_clarity
+    ]
 
 data_filter = data_filter[
     (data_filter["carat"] >= selected_carat[0]) &
@@ -249,11 +406,12 @@ data_filter = data_filter[
 # ==========================================
 # JUDUL DASHBOARD
 # ==========================================
-st.title("💎 Dashboard Analisis Diamonds")
+st.title("Dashboard Analisis Diamonds")
 
 st.markdown("""
 Dashboard ini menyajikan visualisasi data berlian berdasarkan
 karakteristik fisik, kualitas, serta harga.
+
 Gunakan filter pada sidebar untuk melihat data berdasarkan
 kategori dan rentang nilai tertentu.
 """)
@@ -307,7 +465,7 @@ st.markdown("---")
 
 
 # ==========================================
-# PENGATURAN WARNA GRAFIK
+# WARNA GRAFIK
 # ==========================================
 warna = [
     "#E94F91",
@@ -323,7 +481,7 @@ sns.set_theme(style="whitegrid")
 # ==========================================
 # BOXPLOT
 # ==========================================
-st.subheader("📊 Distribusi Harga dan Carat Berdasarkan Cut")
+st.subheader("Distribusi Harga dan Carat Berdasarkan Cut")
 
 col1, col2 = st.columns(2)
 
@@ -342,7 +500,8 @@ with col1:
     ax.set_title(
         "Distribusi Harga Berdasarkan Cut",
         fontsize=13,
-        fontweight="bold"
+        fontweight="bold",
+        color="#783B77"
     )
 
     ax.set_xlabel("Cut")
@@ -373,7 +532,8 @@ with col2:
     ax.set_title(
         "Distribusi Carat Berdasarkan Cut",
         fontsize=13,
-        fontweight="bold"
+        fontweight="bold",
+        color="#783B77"
     )
 
     ax.set_xlabel("Cut")
@@ -395,7 +555,7 @@ st.markdown("---")
 # ==========================================
 # BARPLOT
 # ==========================================
-st.subheader("📈 Perbandingan Harga dan Jumlah Berlian")
+st.subheader("Perbandingan Harga dan Jumlah Berlian")
 
 col1, col2 = st.columns(2)
 
@@ -418,7 +578,8 @@ with col1:
     ax.set_title(
         "Rata-rata Harga Berdasarkan Cut",
         fontsize=13,
-        fontweight="bold"
+        fontweight="bold",
+        color="#783B77"
     )
 
     ax.set_xlabel("Cut")
@@ -449,7 +610,8 @@ with col2:
     ax.set_title(
         "Jumlah Berlian Berdasarkan Cut",
         fontsize=13,
-        fontweight="bold"
+        fontweight="bold",
+        color="#783B77"
     )
 
     ax.set_xlabel("Cut")
@@ -471,7 +633,7 @@ st.markdown("---")
 # ==========================================
 # PIE CHART
 # ==========================================
-st.subheader("🍰 Proporsi Berlian Berdasarkan Cut")
+st.subheader("Proporsi Berlian Berdasarkan Cut")
 
 cut_count = data_filter["cut"].value_counts()
 
@@ -488,14 +650,16 @@ ax.pie(
         "linewidth": 2
     },
     textprops={
-        "fontsize": 10
+        "fontsize": 10,
+        "color": "#593B59"
     }
 )
 
 ax.set_title(
     "Proporsi Cut",
     fontsize=14,
-    fontweight="bold"
+    fontweight="bold",
+    color="#783B77"
 )
 
 fig.patch.set_facecolor("#FFF9FC")
@@ -528,7 +692,8 @@ sns.histplot(
 ax.set_title(
     "Distribusi Harga Berlian",
     fontsize=13,
-    fontweight="bold"
+    fontweight="bold",
+    color="#783B77"
 )
 
 ax.set_xlabel("Harga ($)")
@@ -549,7 +714,7 @@ st.markdown("---")
 # ==========================================
 # HEATMAP KORELASI
 # ==========================================
-st.subheader("🔥 Korelasi Antarvariabel Numerik")
+st.subheader("Korelasi Antarvariabel Numerik")
 
 variabel_numerik = [
     "carat",
@@ -578,7 +743,8 @@ sns.heatmap(
 ax.set_title(
     "Heatmap Korelasi",
     fontsize=14,
-    fontweight="bold"
+    fontweight="bold",
+    color="#783B77"
 )
 
 fig.patch.set_facecolor("#FFF9FC")
@@ -637,7 +803,7 @@ st.markdown(
         padding:15px;
         font-size:13px;
     ">
-        💎 Dashboard Analisis Diamonds
+        Dashboard Analisis Diamonds
         <br>
         Dibuat menggunakan Python dan Streamlit
     </div>
