@@ -11,13 +11,45 @@ st.markdown(
     """
     <style>
 
-    /*Warna Background*/
-    [data-testid="stSidebar"] {
-        background-color: #F8D7E8;
+    /*Background Gradasi Utama*/
+    [data-testid="stAppViewContainer"] {
+        background:
+            radial-gradient(
+                ellipse at 10% 10%,
+                #FFDDEB 0%,
+                transparent 45%
+            ),
+            radial-gradient(
+                ellipse at 90% 20%,
+                #E8D5FF 0%,
+                transparent 45%
+            ),
+            radial-gradient(
+                ellipse at 50% 100%,
+                #FFE2D5 0%,
+                transparent 50%
+            ),
+            linear-gradient(
+                135deg,
+                #FFF8FC,
+                #FCEAF5,
+                #F5EEFF
+            );
     }
 
-    .stApp {
-        background-color: #FFF5F8;
+    /*Sidebar Gradasi*/
+    [data-testid="stSidebar"] {
+        background: linear-gradient(
+            160deg,
+            #F7D6E8,
+            #EBCFEF,
+            #E2D6FA
+        );
+    }
+
+    /*Area Dashboard Transparan*/
+    [data-testid="stMain"] {
+        background: transparent;
     }
 
     /*Warna Font Utama*/
@@ -95,46 +127,18 @@ st.markdown(
         color: #8E1649 !important;
     }
 
-    /*Kartu KPI*/
-    [class*="st-key-bg_kpi"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    /*Kartu Boxplot*/
-    [class*="st-key-bg_box"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    /*Kartu Barplot*/
-    [class*="st-key-bg_bar"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    /*Kartu Pie Chart*/
-    [class*="st-key-bg_pie"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    /*Kartu Histogram*/
-    [class*="st-key-bg_hist"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    /*Kartu Heatmap*/
+    /*Kartu Dashboard*/
+    [class*="st-key-bg_kpi"],
+    [class*="st-key-bg_box"],
+    [class*="st-key-bg_bar"],
+    [class*="st-key-bg_pie"],
+    [class*="st-key-bg_hist"],
     [class*="st-key-bg_heatmap"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
+        background-color: rgba(255, 255, 255, 0.94);
+        border: 1.5px solid #E8A1C4;
+        border-radius: 16px;
         padding: 16px;
+        box-shadow: 0px 4px 15px rgba(194, 24, 91, 0.08);
     }
 
     </style>
