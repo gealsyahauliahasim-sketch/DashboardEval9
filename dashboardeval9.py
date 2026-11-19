@@ -126,7 +126,20 @@ if df_filtered.empty:
     st.stop()
 
 #Membuat Judul Dashboard
-st.title("DASHBOARD ANALISIS DIAMONDS")
+st.markdown(
+    """
+    <h1 style="
+        color: #C2185B;
+        font-size: 42px;
+        font-weight: bold;
+        text-align: center;
+    ">
+        DASHBOARD ANALISIS DIAMONDS
+    </h1>
+    """,
+    unsafe_allow_html=True
+)
+
 st.caption("Dashboard Evaluasi Praktikum 9 Sains Data - Dataset NIM Genap")
 
 #Membuat KPI
