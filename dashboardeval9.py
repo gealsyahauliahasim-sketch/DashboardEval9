@@ -1,501 +1,646 @@
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
-#Konfigurasi
-st.set_page_config(page_title="Dashboard Analisis Diamonds", layout="wide")
-
-st.markdown(
-    """
-    <style>
-
-    /*Background Gradasi Utama*/
-    [data-testid="stAppViewContainer"] {
-        background:
-            radial-gradient(
-                ellipse at 10% 10%,
-                #FFDDEB 0%,
-                transparent 45%
-            ),
-            radial-gradient(
-                ellipse at 90% 20%,
-                #E8D5FF 0%,
-                transparent 45%
-            ),
-            radial-gradient(
-                ellipse at 50% 100%,
-                #FFE2D5 0%,
-                transparent 50%
-            ),
-            linear-gradient(
-                135deg,
-                #FFF8FC,
-                #FCEAF5,
-                #F5EEFF
-            );
-    }
-
-    /*Sidebar Gradasi*/
-    [data-testid="stSidebar"] {
-        background: linear-gradient(
-            160deg,
-            #F7D6E8,
-            #EBCFEF,
-            #E2D6FA
-        );
-    }
-
-    /*Area Dashboard Transparan*/
-    [data-testid="stMain"] {
-        background: transparent;
-    }
-
-    /*Warna Font Utama*/
-    .stApp,
-    [data-testid="stMarkdownContainer"] p,
-    [data-testid="stMarkdownContainer"] li {
-        color: #8E1649;
-    }
-
-    /*Warna Judul*/
-    h1, h2, h3, h4, h5, h6 {
-        color: #C2185B !important;
-    }
-
-    /*Judul Dashboard*/
-    h1 {
-        font-size: 42px !important;
-        font-weight: bold !important;
-        text-align: center !important;
-    }
-
-    /*Warna Font Sidebar*/
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] span {
-        color: #8E1649 !important;
-    }
-
-    /*Judul Filter*/
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: #C2185B !important;
-    }
-
-    /*Dropdown dan Filter*/
-    [data-baseweb="select"] *,
-    [data-baseweb="tag"] *,
-    [data-baseweb="slider"] *,
-    [data-baseweb="input"] * {
-        color: #8E1649 !important;
-    }
-
-    /*Pilihan Dropdown*/
-    [role="option"] {
-        color: #8E1649 !important;
-        background-color: #FFFFFF !important;
-    }
-
-    /*KPI*/
-    [data-testid="stMetricLabel"],
-    [data-testid="stMetricValue"],
-    [data-testid="stMetricDelta"] {
-        color: #8E1649 !important;
-    }
-
-    /*Caption*/
-    [data-testid="stCaptionContainer"] {
-        color: #8E1649 !important;
-    }
-
-    /*Tabel Dataset*/
-    [data-testid="stDataFrame"] {
-        color: #8E1649;
-    }
-
-    /*Expander*/
-    [data-testid="stExpander"] summary,
-    [data-testid="stExpander"] summary p {
-        color: #8E1649 !important;
-    }
-
-    /*Tombol*/
-    button {
-        color: #8E1649 !important;
-    }
-
-    /*Kartu Dashboard*/
-    [class*="st-key-bg_kpi"],
-    [class*="st-key-bg_box"],
-    [class*="st-key-bg_bar"],
-    [class*="st-key-bg_pie"],
-    [class*="st-key-bg_hist"],
-    [class*="st-key-bg_heatmap"] {
-        background-color: rgba(255, 255, 255, 0.94);
-        border: 1.5px solid #E8A1C4;
-        border-radius: 16px;
-        padding: 16px;
-        box-shadow: 0px 4px 15px rgba(194, 24, 91, 0.08);
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True,
+# ==========================================
+# KONFIGURASI DASHBOARD
+# ==========================================
+st.set_page_config(
+    page_title="Dashboard Analisis Diamonds",
+    page_icon="💎",
+    layout="wide"
 )
+
+# ==========================================
+# STYLE DAN BACKGROUND GRADASI
+# ==========================================
+st.markdown("""
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* BACKGROUND UTAMA */
+[data-testid="stAppViewContainer"] {
+    background:
+        radial-gradient(ellipse at 8% 12%,
+            rgba(233, 79, 145, 0.48) 0%,
+            transparent 38%),
+
+        radial-gradient(ellipse at 90% 8%,
+            rgba(135, 58, 145, 0.42) 0%,
+            transparent 40%),
+
+        radial-gradient(ellipse at 75% 85%,
+            rgba(182, 108, 214, 0.40) 0%,
+            transparent 42%),
+
+        radial-gradient(ellipse at 15% 90%,
+            rgba(246, 161, 203, 0.40) 0%,
+            transparent 40%),
+
+        linear-gradient(
+            135deg,
+            #FCE5F3 0%,
+            #F5D3E9 30%,
+            #E8C7F0 60%,
+            #DCC8F5 100%
+        );
+
+    background-attachment: fixed;
+}
+
+/* AREA KONTEN */
+[data-testid="stMain"] {
+    background: transparent;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background:
+        linear-gradient(
+            160deg,
+            rgba(233, 79, 145, 0.28),
+            rgba(135, 58, 145, 0.22),
+            rgba(182, 108, 214, 0.28)
+        );
+    border-right: 1px solid rgba(255,255,255,0.4);
+}
+
+/* SIDEBAR TEXT */
+[data-testid="stSidebar"] * {
+    color: #54264F;
+}
+
+/* JUDUL */
+h1 {
+    color: #762D69 !important;
+    font-weight: 700 !important;
+}
+
+h2, h3 {
+    color: #783B77 !important;
+    font-weight: 600 !important;
+}
+
+/* PARAGRAF */
+p, label, span {
+    color: #593B59;
+}
+
+/* KPI CARDS */
+[data-testid="stMetric"] {
+    background: rgba(255,255,255,0.70);
+    border: 1px solid rgba(255,255,255,0.75);
+    padding: 18px 20px;
+    border-radius: 18px;
+    box-shadow: 0 6px 22px rgba(126, 55, 113, 0.10);
+    backdrop-filter: blur(12px);
+}
+
+/* KPI LABEL */
+[data-testid="stMetricLabel"] {
+    color: #793E75 !important;
+    font-weight: 500;
+}
+
+/* KPI VALUE */
+[data-testid="stMetricValue"] {
+    color: #782D6D !important;
+    font-weight: 700;
+}
+
+/* SELECTBOX */
+[data-testid="stSelectbox"] > div > div {
+    background-color: rgba(255,255,255,0.78);
+    border-radius: 12px;
+}
+
+/* SLIDER */
+[data-testid="stSlider"] {
+    padding-top: 5px;
+}
+
+/* DATAFRAME */
+[data-testid="stDataFrame"] {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* TAB */
+button[data-baseweb="tab"] {
+    color: #783B77 !important;
+}
+
+/* EXPANDER */
+[data-testid="stExpander"] {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.65);
+    border-radius: 15px;
+}
+
+/* CHART CONTAINER */
+[data-testid="stPlotlyChart"],
+[data-testid="stImage"] {
+    background: rgba(255,255,255,0.30);
+    border-radius: 15px;
+}
+
+/* DIVIDER */
+hr {
+    border-color: rgba(135, 58, 145, 0.20);
+}
+
+/* FOOTER */
+footer {
+    visibility: hidden;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# ==========================================
+# MEMUAT DATA
+# ==========================================
+url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv"
+
+@st.cache_data
+def load_data():
+    return pd.read_csv(url)
+
+data = load_data()
+
+
+# ==========================================
+# SIDEBAR - FILTER DATA
+# ==========================================
+st.sidebar.title("💎 Filter Dashboard")
+st.sidebar.markdown("Atur pilihan data sesuai kebutuhan analisis.")
+
+cut_options = ["All"] + sorted(data["cut"].unique().tolist())
+color_options = ["All"] + sorted(data["color"].unique().tolist())
+clarity_options = ["All"] + sorted(data["clarity"].unique().tolist())
+
+selected_cut = st.sidebar.selectbox(
+    "Cut",
+    cut_options
+)
+
+selected_color = st.sidebar.selectbox(
+    "Color",
+    color_options
+)
+
+selected_clarity = st.sidebar.selectbox(
+    "Clarity",
+    clarity_options
+)
+
+carat_min = float(data["carat"].min())
+carat_max = float(data["carat"].max())
+
+selected_carat = st.sidebar.slider(
+    "Rentang Carat",
+    min_value=carat_min,
+    max_value=carat_max,
+    value=(carat_min, carat_max)
+)
+
+price_min = int(data["price"].min())
+price_max = int(data["price"].max())
+
+selected_price = st.sidebar.slider(
+    "Rentang Harga ($)",
+    min_value=price_min,
+    max_value=price_max,
+    value=(price_min, price_max)
+)
+
+
+# ==========================================
+# FILTER DATA
+# ==========================================
+data_filter = data.copy()
+
+if selected_cut != "All":
+    data_filter = data_filter[data_filter["cut"] == selected_cut]
+
+if selected_color != "All":
+    data_filter = data_filter[data_filter["color"] == selected_color]
+
+if selected_clarity != "All":
+    data_filter = data_filter[data_filter["clarity"] == selected_clarity]
+
+data_filter = data_filter[
+    (data_filter["carat"] >= selected_carat[0]) &
+    (data_filter["carat"] <= selected_carat[1]) &
+    (data_filter["price"] >= selected_price[0]) &
+    (data_filter["price"] <= selected_price[1])
+]
+
+
+# ==========================================
+# JUDUL DASHBOARD
+# ==========================================
+st.title("💎 Dashboard Analisis Diamonds")
+
+st.markdown("""
+Dashboard ini menyajikan visualisasi data berlian berdasarkan
+karakteristik fisik, kualitas, serta harga.
+Gunakan filter pada sidebar untuk melihat data berdasarkan
+kategori dan rentang nilai tertentu.
+""")
+
+st.markdown("---")
+
+
+# ==========================================
+# KPI
+# ==========================================
+col1, col2, col3, col4 = st.columns(4)
+
+jumlah_data = len(data_filter)
+
+rata_harga = (
+    data_filter["price"].mean()
+    if jumlah_data > 0 else 0
+)
+
+rata_carat = (
+    data_filter["carat"].mean()
+    if jumlah_data > 0 else 0
+)
+
+median_harga = (
+    data_filter["price"].median()
+    if jumlah_data > 0 else 0
+)
+
+col1.metric(
+    "Jumlah Data",
+    f"{jumlah_data:,}"
+)
+
+col2.metric(
+    "Rata-rata Harga",
+    f"${rata_harga:,.2f}"
+)
+
+col3.metric(
+    "Rata-rata Carat",
+    f"{rata_carat:.2f}"
+)
+
+col4.metric(
+    "Median Harga",
+    f"${median_harga:,.0f}"
+)
+
+st.markdown("---")
+
+
+# ==========================================
+# PENGATURAN WARNA GRAFIK
+# ==========================================
+warna = [
+    "#E94F91",
+    "#873A91",
+    "#B66CD6",
+    "#F6A1CB",
+    "#7565D9"
+]
 
 sns.set_theme(style="whitegrid")
 
-#Load Data
-path = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv"
-df_dashboard = pd.read_csv(path)
 
-#Fitur Filter
-st.sidebar.header("Filter Dashboard")
+# ==========================================
+# BOXPLOT
+# ==========================================
+st.subheader("📊 Distribusi Harga dan Carat Berdasarkan Cut")
 
-cut_value = list(df_dashboard["cut"].unique())
-selected_cut = st.sidebar.multiselect(
-    label="Diamond Cut Quality",
-    options=cut_value,
-    default=cut_value
+col1, col2 = st.columns(2)
+
+with col1:
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    sns.boxplot(
+        data=data_filter,
+        x="cut",
+        y="price",
+        palette=warna,
+        ax=ax
+    )
+
+    ax.set_title(
+        "Distribusi Harga Berdasarkan Cut",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Cut")
+    ax.set_ylabel("Harga ($)")
+
+    ax.set_facecolor("#FFF9FC")
+    fig.patch.set_facecolor("#FFF9FC")
+
+    plt.xticks(rotation=15)
+    plt.tight_layout()
+
+    st.pyplot(fig)
+    plt.close(fig)
+
+
+with col2:
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    sns.boxplot(
+        data=data_filter,
+        x="cut",
+        y="carat",
+        palette=warna,
+        ax=ax
+    )
+
+    ax.set_title(
+        "Distribusi Carat Berdasarkan Cut",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Cut")
+    ax.set_ylabel("Carat")
+
+    ax.set_facecolor("#FFF9FC")
+    fig.patch.set_facecolor("#FFF9FC")
+
+    plt.xticks(rotation=15)
+    plt.tight_layout()
+
+    st.pyplot(fig)
+    plt.close(fig)
+
+
+st.markdown("---")
+
+
+# ==========================================
+# BARPLOT
+# ==========================================
+st.subheader("📈 Perbandingan Harga dan Jumlah Berlian")
+
+col1, col2 = st.columns(2)
+
+with col1:
+
+    harga_cut = (
+        data_filter.groupby("cut")["price"]
+        .mean()
+        .sort_values(ascending=False)
+    )
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    harga_cut.plot(
+        kind="bar",
+        color=warna,
+        ax=ax
+    )
+
+    ax.set_title(
+        "Rata-rata Harga Berdasarkan Cut",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Cut")
+    ax.set_ylabel("Rata-rata Harga ($)")
+
+    ax.set_facecolor("#FFF9FC")
+    fig.patch.set_facecolor("#FFF9FC")
+
+    plt.xticks(rotation=15)
+    plt.tight_layout()
+
+    st.pyplot(fig)
+    plt.close(fig)
+
+
+with col2:
+
+    jumlah_cut = data_filter["cut"].value_counts()
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    jumlah_cut.plot(
+        kind="bar",
+        color=warna,
+        ax=ax
+    )
+
+    ax.set_title(
+        "Jumlah Berlian Berdasarkan Cut",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Cut")
+    ax.set_ylabel("Jumlah")
+
+    ax.set_facecolor("#FFF9FC")
+    fig.patch.set_facecolor("#FFF9FC")
+
+    plt.xticks(rotation=15)
+    plt.tight_layout()
+
+    st.pyplot(fig)
+    plt.close(fig)
+
+
+st.markdown("---")
+
+
+# ==========================================
+# PIE CHART
+# ==========================================
+st.subheader("🍰 Proporsi Berlian Berdasarkan Cut")
+
+cut_count = data_filter["cut"].value_counts()
+
+fig, ax = plt.subplots(figsize=(8, 6))
+
+ax.pie(
+    cut_count,
+    labels=cut_count.index,
+    autopct="%1.1f%%",
+    colors=warna,
+    startangle=90,
+    wedgeprops={
+        "edgecolor": "white",
+        "linewidth": 2
+    },
+    textprops={
+        "fontsize": 10
+    }
 )
 
-color_value = sorted(list(df_dashboard["color"].unique()))
-selected_color = st.sidebar.multiselect(
-    label="Diamond Color",
-    options=color_value,
-    default=color_value
+ax.set_title(
+    "Proporsi Cut",
+    fontsize=14,
+    fontweight="bold"
 )
 
-clarity_value = sorted(list(df_dashboard["clarity"].unique()))
-selected_clarity = st.sidebar.multiselect(
-    label="Diamond Clarity",
-    options=clarity_value,
-    default=clarity_value
+fig.patch.set_facecolor("#FFF9FC")
+
+plt.tight_layout()
+
+st.pyplot(fig)
+plt.close(fig)
+
+
+st.markdown("---")
+
+
+# ==========================================
+# HISTOGRAM
+# ==========================================
+st.subheader("📉 Distribusi Harga Berlian")
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+sns.histplot(
+    data=data_filter,
+    x="price",
+    bins=30,
+    kde=True,
+    color="#E94F91",
+    ax=ax
 )
 
-carat_value = (
-    float(df_dashboard["carat"].min()),
-    float(df_dashboard["carat"].max())
+ax.set_title(
+    "Distribusi Harga Berlian",
+    fontsize=13,
+    fontweight="bold"
 )
 
-selected_carat = st.sidebar.slider(
-    label="Diamond Carat Range",
-    min_value=carat_value[0],
-    max_value=carat_value[1],
-    value=carat_value
-)
+ax.set_xlabel("Harga ($)")
+ax.set_ylabel("Frekuensi")
 
-price_value = (
-    int(df_dashboard["price"].min()),
-    int(df_dashboard["price"].max())
-)
+ax.set_facecolor("#FFF9FC")
+fig.patch.set_facecolor("#FFF9FC")
 
-selected_price = st.sidebar.slider(
-    label="Diamond Price Range ($)",
-    min_value=price_value[0],
-    max_value=price_value[1],
-    value=price_value
-)
+plt.tight_layout()
 
-df_filtered = df_dashboard[
-    (df_dashboard["cut"].isin(selected_cut)) &
-    (df_dashboard["color"].isin(selected_color)) &
-    (df_dashboard["clarity"].isin(selected_clarity)) &
-    (df_dashboard["carat"].between(selected_carat[0], selected_carat[1])) &
-    (df_dashboard["price"].between(selected_price[0], selected_price[1]))
+st.pyplot(fig)
+plt.close(fig)
+
+
+st.markdown("---")
+
+
+# ==========================================
+# HEATMAP KORELASI
+# ==========================================
+st.subheader("🔥 Korelasi Antarvariabel Numerik")
+
+variabel_numerik = [
+    "carat",
+    "depth",
+    "table",
+    "price",
+    "x",
+    "y",
+    "z"
 ]
 
-if df_filtered.empty:
-    st.warning("Tidak ada data yang sesuai dengan filter. Silakan pilih kembali opsi filter.")
-    st.stop()
+corr = data_filter[variabel_numerik].corr()
 
-#Membuat Judul Dashboard
+fig, ax = plt.subplots(figsize=(10, 7))
+
+sns.heatmap(
+    corr,
+    annot=True,
+    cmap="PuRd",
+    fmt=".2f",
+    linewidths=0.5,
+    square=True,
+    ax=ax
+)
+
+ax.set_title(
+    "Heatmap Korelasi",
+    fontsize=14,
+    fontweight="bold"
+)
+
+fig.patch.set_facecolor("#FFF9FC")
+
+plt.tight_layout()
+
+st.pyplot(fig)
+plt.close(fig)
+
+
+st.markdown("---")
+
+
+# ==========================================
+# DATASET OVERVIEW
+# ==========================================
+with st.expander("📋 Dataset Overview"):
+
+    st.markdown("### Data Berlian")
+
+    st.write(
+        "Jumlah baris:",
+        data_filter.shape[0]
+    )
+
+    st.write(
+        "Jumlah kolom:",
+        data_filter.shape[1]
+    )
+
+    st.markdown("### Data")
+
+    st.dataframe(
+        data_filter,
+        use_container_width=True
+    )
+
+    st.markdown("### Statistik Deskriptif")
+
+    st.dataframe(
+        data_filter.describe(),
+        use_container_width=True
+    )
+
+
+# ==========================================
+# FOOTER
+# ==========================================
+st.markdown("---")
+
 st.markdown(
     """
-    <h1 style="
-        color: #C2185B;
-        font-size: 42px;
-        font-weight: bold;
-        text-align: center;
+    <div style="
+        text-align:center;
+        color:#783B77;
+        padding:15px;
+        font-size:13px;
     ">
-        DASHBOARD ANALISIS DIAMONDS
-    </h1>
+        💎 Dashboard Analisis Diamonds
+        <br>
+        Dibuat menggunakan Python dan Streamlit
+    </div>
     """,
     unsafe_allow_html=True
 )
-
-st.caption("Dashboard Evaluasi Praktikum 9 Sains Data - Dataset NIM Genap")
-
-#Membuat KPI
-with st.container(border=True, key="bg_kpi"):
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric(
-            "Jumlah Berlian",
-            f"{len(df_filtered):,}"
-        )
-
-    with col2:
-        st.metric(
-            "Rata-Rata Harga Berlian",
-            f"${df_filtered['price'].mean():,.2f}"
-        )
-
-    with col3:
-        st.metric(
-            "Rata-Rata Carat",
-            f"{df_filtered['carat'].mean():.2f}"
-        )
-
-    with col4:
-        st.metric(
-            "Median Harga Berlian",
-            f"${df_filtered['price'].median():,.2f}"
-        )
-
-#Membuat Visualisasi Tengah
-
-##Persiapan dataset visualisasi
-harga_per_cut = df_filtered.groupby("cut")["price"].mean().reset_index()
-jumlah_per_cut = df_filtered.groupby("cut").size().reset_index(name="jumlah")
-distribusi_cut = df_filtered["cut"].value_counts()
-
-heatmap_df = df_filtered[
-    ["carat", "depth", "table", "price", "x", "y", "z"]
-].corr()
-
-##Membuat fungsi pengaturan grafik
-def atur_grafik(fig, ax, label_x, label_y):
-    warna_kartu = "#FFFFFF"
-    warna_teks = "#8E1649"
-    warna_grid = "#F8D7E8"
-
-    fig.patch.set_facecolor(warna_kartu)
-    ax.set_facecolor(warna_kartu)
-    ax.set_xlabel(label_x, color=warna_teks)
-    ax.set_ylabel(label_y, color=warna_teks)
-    ax.tick_params(colors=warna_teks)
-    ax.grid(axis="y", color=warna_grid)
-    ax.set_axisbelow(True)
-
-    for spine in ax.spines.values():
-        spine.set_color("#E75480")
-
-##Membuat visualisasi Boxplot
-with st.container(border=True, key="bg_box"):
-    col1_box, col2_box = st.columns(2)
-
-    with col1_box:
-        st.markdown("**Distribusi Harga Berlian Berdasarkan Cut**")
-
-        fig1, ax1 = plt.subplots()
-
-        sns.boxplot(
-            data=df_filtered,
-            x="cut",
-            y="price",
-            color="#F4A6C1",
-            ax=ax1
-        )
-
-        atur_grafik(
-            fig1,
-            ax1,
-            "Diamond Cut",
-            "Diamond Price ($)"
-        )
-
-        st.pyplot(fig1)
-        plt.close(fig1)
-
-    with col2_box:
-        st.markdown("**Distribusi Carat Berdasarkan Cut**")
-
-        fig2, ax2 = plt.subplots()
-
-        sns.boxplot(
-            data=df_filtered,
-            x="cut",
-            y="carat",
-            color="#E75480",
-            ax=ax2
-        )
-
-        atur_grafik(
-            fig2,
-            ax2,
-            "Diamond Cut",
-            "Carat"
-        )
-
-        st.pyplot(fig2)
-        plt.close(fig2)
-
-#Membuat Visualisasi Barplot
-with st.container(border=True, key="bg_bar"):
-    col1_bar, col2_bar = st.columns(2)
-
-    with col1_bar:
-        st.markdown("**Rata-Rata Harga Berlian Berdasarkan Cut**")
-
-        fig3, ax3 = plt.subplots()
-
-        sns.barplot(
-            data=harga_per_cut,
-            x="cut",
-            y="price",
-            color="#E75480",
-            ax=ax3
-        )
-
-        atur_grafik(
-            fig3,
-            ax3,
-            "Diamond Cut",
-            "Average Price ($)"
-        )
-
-        for container in ax3.containers:
-            ax3.bar_label(
-                container,
-                fmt="$%.0f",
-                color="#C2185B",
-                fontsize=9,
-                padding=3
-            )
-
-        st.pyplot(fig3)
-        plt.close(fig3)
-
-    with col2_bar:
-        st.markdown("**Jumlah Berlian Berdasarkan Cut**")
-
-        fig4, ax4 = plt.subplots()
-
-        sns.barplot(
-            data=jumlah_per_cut,
-            x="cut",
-            y="jumlah",
-            color="#D62828",
-            ax=ax4
-        )
-
-        atur_grafik(
-            fig4,
-            ax4,
-            "Diamond Cut",
-            "Number of Diamonds"
-        )
-
-        for container in ax4.containers:
-            ax4.bar_label(
-                container,
-                fmt="%.0f",
-                color="#8E1649",
-                fontsize=9,
-                padding=3
-            )
-
-        st.pyplot(fig4)
-        plt.close(fig4)
-
-#Membuat Visualisasi Pie Chart
-with st.container(border=True, key="bg_pie"):
-    st.markdown("**Persentase Berlian Berdasarkan Cut**")
-
-    fig5, ax5 = plt.subplots()
-
-    warna_pie = ["#F8D7E8", "#F4A6C1", "#E75480", "#C2185B", "#D62828"]
-
-    fig5.patch.set_facecolor("#FFFFFF")
-    ax5.set_facecolor("#FFFFFF")
-
-    ax5.pie(
-        distribusi_cut,
-        labels=distribusi_cut.index,
-        autopct="%1.1f%%",
-        startangle=90,
-        colors=warna_pie,
-        textprops={"color": "#8E1649"},
-        wedgeprops={
-            "edgecolor": "#FFFFFF",
-            "linewidth": 2
-        }
-    )
-
-    ax5.set_title(
-        "Diamond Cut Distribution",
-        color="#C2185B"
-    )
-
-    st.pyplot(fig5)
-    plt.close(fig5)
-
-#Membuat Visualisasi Histogram
-with st.container(border=True, key="bg_hist"):
-    st.markdown("**Distribusi Harga Berlian**")
-
-    fig6, ax6 = plt.subplots()
-
-    sns.histplot(
-        data=df_filtered,
-        x="price",
-        bins=30,
-        color="#E75480",
-        kde=True,
-        ax=ax6
-    )
-
-    if len(ax6.lines) > 0:
-        ax6.lines[-1].set_color("#D62828")
-
-    atur_grafik(
-        fig6,
-        ax6,
-        "Diamond Price ($)",
-        "Frequency"
-    )
-
-    st.pyplot(fig6)
-    plt.close(fig6)
-
-#Membuat Visualisasi Heatmap
-with st.container(border=True, key="bg_heatmap"):
-    st.markdown("**Heatmap Korelasi Variabel Numerik**")
-
-    fig7, ax7 = plt.subplots()
-
-    fig7.patch.set_facecolor("#FFFFFF")
-    ax7.set_facecolor("#FFFFFF")
-
-    sns.heatmap(
-        heatmap_df,
-        annot=True,
-        fmt=".2f",
-        cmap="RdPu",
-        linecolor="#FFFFFF",
-        linewidths=1,
-        ax=ax7
-    )
-
-    ax7.set_xlabel("Variabel", color="#8E1649")
-    ax7.set_ylabel("Variabel", color="#8E1649")
-    ax7.tick_params(colors="#8E1649")
-
-    st.pyplot(fig7)
-    plt.close(fig7)
-
-#Membuat View Dataset
-with st.expander("**Dataset Overview**"):
-    st.write("Jumlah Data:", len(df_filtered))
-    st.dataframe(df_filtered, use_container_width=True)
-
-    st.markdown("**Statistik Deskriptif**")
-    st.dataframe(
-        df_filtered.describe(),
-        use_container_width=True
-    )
