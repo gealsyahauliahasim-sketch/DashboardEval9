@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,42 +10,8 @@ st.set_page_config(page_title="Dashboard Analisis Diamonds", layout="wide")
 st.markdown(
     """
     <style>
-    [class*="st-key-bg_kpi"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
 
-    [class*="st-key-bg_box"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    [class*="st-key-bg_bar"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    [class*="st-key-bg_pie"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    [class*="st-key-bg_hist"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
-    [class*="st-key-bg_heatmap"] {
-        background-color: #FFFFFF;
-        border: 2px solid #E75480;
-        padding: 16px;
-    }
-
+    /*Warna Background*/
     [data-testid="stSidebar"] {
         background-color: #F8D7E8;
     }
@@ -54,6 +19,124 @@ st.markdown(
     .stApp {
         background-color: #FFF5F8;
     }
+
+    /*Warna Font Utama*/
+    .stApp,
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] li {
+        color: #8E1649;
+    }
+
+    /*Warna Judul*/
+    h1, h2, h3, h4, h5, h6 {
+        color: #C2185B !important;
+    }
+
+    /*Judul Dashboard*/
+    h1 {
+        font-size: 42px !important;
+        font-weight: bold !important;
+        text-align: center !important;
+    }
+
+    /*Warna Font Sidebar*/
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] span {
+        color: #8E1649 !important;
+    }
+
+    /*Judul Filter*/
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #C2185B !important;
+    }
+
+    /*Dropdown dan Filter*/
+    [data-baseweb="select"] *,
+    [data-baseweb="tag"] *,
+    [data-baseweb="slider"] *,
+    [data-baseweb="input"] * {
+        color: #8E1649 !important;
+    }
+
+    /*Pilihan Dropdown*/
+    [role="option"] {
+        color: #8E1649 !important;
+        background-color: #FFFFFF !important;
+    }
+
+    /*KPI*/
+    [data-testid="stMetricLabel"],
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"] {
+        color: #8E1649 !important;
+    }
+
+    /*Caption*/
+    [data-testid="stCaptionContainer"] {
+        color: #8E1649 !important;
+    }
+
+    /*Tabel Dataset*/
+    [data-testid="stDataFrame"] {
+        color: #8E1649;
+    }
+
+    /*Expander*/
+    [data-testid="stExpander"] summary,
+    [data-testid="stExpander"] summary p {
+        color: #8E1649 !important;
+    }
+
+    /*Tombol*/
+    button {
+        color: #8E1649 !important;
+    }
+
+    /*Kartu KPI*/
+    [class*="st-key-bg_kpi"] {
+        background-color: #FFFFFF;
+        border: 2px solid #E75480;
+        padding: 16px;
+    }
+
+    /*Kartu Boxplot*/
+    [class*="st-key-bg_box"] {
+        background-color: #FFFFFF;
+        border: 2px solid #E75480;
+        padding: 16px;
+    }
+
+    /*Kartu Barplot*/
+    [class*="st-key-bg_bar"] {
+        background-color: #FFFFFF;
+        border: 2px solid #E75480;
+        padding: 16px;
+    }
+
+    /*Kartu Pie Chart*/
+    [class*="st-key-bg_pie"] {
+        background-color: #FFFFFF;
+        border: 2px solid #E75480;
+        padding: 16px;
+    }
+
+    /*Kartu Histogram*/
+    [class*="st-key-bg_hist"] {
+        background-color: #FFFFFF;
+        border: 2px solid #E75480;
+        padding: 16px;
+    }
+
+    /*Kartu Heatmap*/
+    [class*="st-key-bg_heatmap"] {
+        background-color: #FFFFFF;
+        border: 2px solid #E75480;
+        padding: 16px;
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -147,20 +230,28 @@ with st.container(border=True, key="bg_kpi"):
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Jumlah Berlian",
-                  f"{len(df_filtered):,}")
+        st.metric(
+            "Jumlah Berlian",
+            f"{len(df_filtered):,}"
+        )
 
     with col2:
-        st.metric("Rata-Rata Harga Berlian",
-                  f"${df_filtered['price'].mean():,.2f}")
+        st.metric(
+            "Rata-Rata Harga Berlian",
+            f"${df_filtered['price'].mean():,.2f}"
+        )
 
     with col3:
-        st.metric("Rata-Rata Carat",
-                  f"{df_filtered['carat'].mean():.2f}")
+        st.metric(
+            "Rata-Rata Carat",
+            f"{df_filtered['carat'].mean():.2f}"
+        )
 
     with col4:
-        st.metric("Median Harga Berlian",
-                  f"${df_filtered['price'].median():,.2f}")
+        st.metric(
+            "Median Harga Berlian",
+            f"${df_filtered['price'].median():,.2f}"
+        )
 
 #Membuat Visualisasi Tengah
 
