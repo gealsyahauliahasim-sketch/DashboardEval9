@@ -9,7 +9,7 @@ import streamlit as st
 # KONFIGURASI DASHBOARD
 # ==========================================
 st.set_page_config(
-    page_title="Dashboard Analisis Diamonds",
+    page_title="Diamonds Analytics Dashboard",
     layout="wide"
 )
 
@@ -19,7 +19,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Poppins', sans-serif;
@@ -56,11 +56,11 @@ html, body, [class*="css"] {
         200% 200%,
         300% 300%;
 
-    animation: gradientMove 18s ease infinite;
+    animation: gradientMove 22s ease infinite;
     background-attachment: fixed;
 }
 
-/* GERAKAN GRADASI */
+/* ANIMASI GRADASI */
 @keyframes gradientMove {
     0% {
         background-position:
@@ -106,7 +106,7 @@ html, body, [class*="css"] {
         );
 
     background-size: 300% 300%;
-    animation: sidebarGlow 15s ease infinite;
+    animation: sidebarGlow 18s ease infinite;
 
     border-right: 1px solid rgba(255,255,255,0.45);
 }
@@ -125,30 +125,96 @@ html, body, [class*="css"] {
     }
 }
 
+/* SIDEBAR TEXT */
 [data-testid="stSidebar"] * {
     color: #54264F;
 }
 
-/* JUDUL */
-h1 {
-    color: #762D69 !important;
+/* JUDUL DASHBOARD */
+.dashboard-title {
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    text-align: center;
+    letter-spacing: 1px;
+
+    color: #70265F !important;
+
+    text-shadow:
+        0px 2px 2px rgba(255,255,255,0.75),
+        0px 5px 15px rgba(135,58,145,0.18);
+
+    margin-bottom: 8px;
+
+    animation: titleAppear 1s ease;
+}
+
+/* SUBJUDUL */
+.dashboard-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.8;
+
+    color: #63385F !important;
+    text-align: center;
+
+    background: rgba(255,255,255,0.48);
+
+    padding: 16px 24px;
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.75);
+
+    box-shadow:
+        0 6px 20px rgba(135,58,145,0.10);
+
+    backdrop-filter: blur(12px);
+
+    margin: 10px auto 25px auto;
+
+    animation: subtitleAppear 1.2s ease;
+}
+
+/* JUDUL GRAFIK */
+h2, h3 {
+    color: #70265F !important;
     font-weight: 700 !important;
 }
 
-h2, h3 {
-    color: #783B77 !important;
-    font-weight: 600 !important;
+/* ANIMASI JUDUL */
+@keyframes titleAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes subtitleAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* KPI CARD */
 [data-testid="stMetric"] {
     background: rgba(255,255,255,0.72);
     border: 1px solid rgba(255,255,255,0.85);
+
     padding: 18px 20px;
     border-radius: 18px;
 
     box-shadow:
-        0 6px 22px rgba(126, 55, 113, 0.12);
+        0 6px 22px rgba(126,55,113,0.12);
 
     backdrop-filter: blur(12px);
 
@@ -157,20 +223,23 @@ h2, h3 {
     animation: softGlow 4s ease-in-out infinite alternate;
 }
 
+/* KPI HOVER */
 [data-testid="stMetric"]:hover {
     transform: translateY(-6px) scale(1.02);
 
     box-shadow:
-        0 12px 28px rgba(126, 55, 113, 0.22);
+        0 12px 28px rgba(126,55,113,0.22);
 
     background: rgba(255,255,255,0.90);
 }
 
+/* KPI LABEL */
 [data-testid="stMetricLabel"] {
     color: #793E75 !important;
     font-weight: 500;
 }
 
+/* KPI VALUE */
 [data-testid="stMetricValue"] {
     color: #782D6D !important;
     font-weight: 700;
@@ -180,12 +249,12 @@ h2, h3 {
 @keyframes softGlow {
     from {
         box-shadow:
-            0 5px 18px rgba(135, 58, 145, 0.10);
+            0 5px 18px rgba(135,58,145,0.10);
     }
 
     to {
         box-shadow:
-            0 8px 24px rgba(233, 79, 145, 0.17);
+            0 8px 24px rgba(233,79,145,0.17);
     }
 }
 
@@ -210,7 +279,7 @@ div[data-testid="stElementContainer"]:has(img) {
     border: 1px solid rgba(255,255,255,0.65);
 
     box-shadow:
-        0 5px 20px rgba(135, 58, 145, 0.08);
+        0 5px 20px rgba(135,58,145,0.08);
 
     transition:
         transform 0.4s ease,
@@ -227,8 +296,8 @@ div[data-testid="stElementContainer"]:has(img):hover {
     background: rgba(255,255,255,0.60);
 
     box-shadow:
-        0 12px 30px rgba(135, 58, 145, 0.18),
-        0 0 15px rgba(233, 79, 145, 0.10);
+        0 12px 30px rgba(135,58,145,0.18),
+        0 0 15px rgba(233,79,145,0.10);
 
     border: 1px solid rgba(255,255,255,0.95);
 }
@@ -255,7 +324,7 @@ div[data-testid="stElementContainer"]:has(img):hover {
 
 [data-testid="stDataFrame"]:hover {
     box-shadow:
-        0 10px 25px rgba(135, 58, 145, 0.16);
+        0 10px 25px rgba(135,58,145,0.16);
 }
 
 /* EXPANDER */
@@ -270,7 +339,7 @@ div[data-testid="stElementContainer"]:has(img):hover {
     transform: translateY(-3px);
 
     box-shadow:
-        0 10px 25px rgba(135, 58, 145, 0.15);
+        0 10px 25px rgba(135,58,145,0.15);
 }
 
 /* TAB */
@@ -297,7 +366,7 @@ button[data-baseweb="tab"] {
 
 /* GARIS PEMBATAS */
 hr {
-    border-color: rgba(135, 58, 145, 0.20);
+    border-color: rgba(135,58,145,0.20);
 }
 
 /* FOOTER */
@@ -327,7 +396,7 @@ data = load_data()
 
 
 # ==========================================
-# SIDEBAR - FILTER DATA
+# SIDEBAR FILTER
 # ==========================================
 st.sidebar.title("Filter Dashboard")
 
@@ -404,17 +473,20 @@ data_filter = data_filter[
 
 
 # ==========================================
-# JUDUL DASHBOARD
+# JUDUL DAN SUBJUDUL
 # ==========================================
-st.title("Dashboard Analisis Diamonds")
-
 st.markdown("""
-Dashboard ini menyajikan visualisasi data berlian berdasarkan
-karakteristik fisik, kualitas, serta harga.
+<div class="dashboard-title">
+    DIAMONDS ANALYTICS DASHBOARD
+</div>
 
-Gunakan filter pada sidebar untuk melihat data berdasarkan
-kategori dan rentang nilai tertentu.
-""")
+<div class="dashboard-subtitle">
+    Visualisasi Interaktif Karakteristik, Kualitas,
+    dan Harga Berlian
+    <br>
+    <b>Explore | Analyze | Discover</b>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -676,7 +748,7 @@ st.markdown("---")
 # ==========================================
 # HISTOGRAM
 # ==========================================
-st.subheader("📉 Distribusi Harga Berlian")
+st.subheader("Distribusi Harga Berlian")
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
@@ -761,7 +833,7 @@ st.markdown("---")
 # ==========================================
 # DATASET OVERVIEW
 # ==========================================
-with st.expander("📋 Dataset Overview"):
+with st.expander("Dataset Overview"):
 
     st.markdown("### Data Berlian")
 
@@ -803,7 +875,7 @@ st.markdown(
         padding:15px;
         font-size:13px;
     ">
-        Dashboard Analisis Diamonds
+        Diamonds Analytics Dashboard
         <br>
         Dibuat menggunakan Python dan Streamlit
     </div>
